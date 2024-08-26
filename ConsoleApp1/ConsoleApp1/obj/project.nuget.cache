@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/IbfzAJ0EtGmu1UL3nBZx8B7qXbKZ9a+MZYYoRBbs3VA7f4ha9BEABzEByTNgxKNCOCU6GFZcFRF2X8/63bSdQ==",
+  "dgSpecHash": "2PdLKQIz6+n1RBpea4YBlFPiXTm1quNq3uKsVZwVUaDUT5aIpjaePoPWQ3sg7H3CfaMHzOr7d1m39ntSJZqnYQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lukas\\source\\repos\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\Lukas\\Documents\\Game Development\\bank-app\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lukas\\.nuget\\packages\\bouncycastle.cryptography\\2.3.1\\bouncycastle.cryptography.2.3.1.nupkg.sha512",
     "C:\\Users\\Lukas\\.nuget\\packages\\google.protobuf\\3.26.1\\google.protobuf.3.26.1.nupkg.sha512",

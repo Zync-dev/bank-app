@@ -36,8 +36,6 @@ namespace ConsoleApp1
                 Console.ReadKey();
                 Environment.Exit(0);
             }
-
-            ShowDashboard();
         }
 
         public static void LogIn()
@@ -64,33 +62,43 @@ namespace ConsoleApp1
             LogIn();
         }
 
-        public static void ShowDashboard()
+        public static void ShowDashboard(string rank)
         {
-            Console.Clear();
-            Console.Write($"Velkommen, {_userInputUsername}.\n\nDin nuværende saldo er: {CheckBalance(_userInputUsername)}\n\nVælg venligst en af følgende funktioner:\n\n1. Indsæt penge\n2. Hæv penge\n\nSkriv her: ");
-            try
+            if(rank == "user")
             {
-                int chosenOption = Convert.ToInt32(Console.ReadLine());
-
-                switch(chosenOption)
+                Console.Clear();
+                Console.Write($"Velkommen, {_userInputUsername}.\n\nDin nuværende saldo er: {CheckBalance(_userInputUsername)}\n\nVælg venligst en af følgende funktioner:\n\n1. Indsæt penge\n2. Hæv penge\n\nSkriv her: ");
+                try
                 {
-                    case 1:
-                        DepositMoney();
-                        break;
-                    case 2:
-                        WithdrawMoney();
-                        break;
-                    default:
-                        Console.Write("Ugyldigt input! Tryk Enter for at prøve igen.");
-                        ShowDashboard();
-                        break;
+                    int chosenOption = Convert.ToInt32(Console.ReadLine());
+
+                    switch (chosenOption)
+                    {
+                        case 1:
+                            DepositMoney();
+                            break;
+                        case 2:
+                            WithdrawMoney();
+                            break;
+                        default:
+                            Console.Write("Ugyldigt input! Tryk Enter for at prøve igen.");
+                            ShowDashboard(rank);
+                            break;
+                    }
                 }
-            } catch
+                catch
+                {
+                    Console.Write("Ugyldigt input! Tryk Enter for at prøve igen.");
+                    Console.ReadKey();
+                    ShowDashboard(rank);
+                }
+            } else if (rank == "admin")
             {
-                Console.Write("Ugyldigt input! Tryk Enter for at prøve igen.");
-                Console.ReadKey();
-                ShowDashboard();
+                Console.Write($"Velkommen, {_userInputUsername}.\n\nDu er i øjeblikket logget ind som administrator!\n\n");
+
             }
+
+
         }
 
         public static void DepositMoney()
@@ -111,7 +119,7 @@ namespace ConsoleApp1
             Console.Clear();
             Console.Write($"Din saldo er nu: {CheckBalance(_userInputUsername)}\n\nTryk Enter for at vende tilbage til dit Dashboard.");
             Console.ReadKey();
-            ShowDashboard();
+            ShowDashboard("user");
         }
         
         public static void WithdrawMoney()
@@ -133,7 +141,7 @@ namespace ConsoleApp1
             Console.Clear();
             Console.Write($"Din saldo er nu: {CheckBalance(_userInputUsername)}\n\nTryk Enter for at vende tilbage til dit Dashboard.");
             Console.ReadKey();
-            ShowDashboard();
+            ShowDashboard("user");
         }
 
         public static void ConnectSQL()
@@ -152,7 +160,7 @@ namespace ConsoleApp1
         {
             try
             {
-                string query = "SELECT password FROM users WHERE username = @username";
+                string query = "SELECT password, rank FROM users WHERE username = @username";
                 var cmd = new MySqlCommand(query, _connection);
                 cmd.Parameters.AddWithValue("@username", _userInputUsername);
 
@@ -166,17 +174,24 @@ namespace ConsoleApp1
 
                 reader.Read();
                 string password = reader.GetString(0);
+                string rank = reader.GetString(1);
                 reader.Close();
 
                 Console.Clear();
                 Console.Write("Indtast venligst din adgangskode.\n\nSkriv her: ");
                 string userInputPassword = Console.ReadLine();
 
-                if (userInputPassword == password)
+                if (userInputPassword == password && rank == "user")
                 {
-
                     Console.Clear();
-                } else
+                    ShowDashboard(rank);
+                } 
+                else if (userInputPassword == password && rank == "admin")
+                {
+                    Console.Clear();
+                    ShowDashboard(rank);
+                } 
+                else
                 {
                     throw new Exception("Adgangskoden er forkert!");
                 }
